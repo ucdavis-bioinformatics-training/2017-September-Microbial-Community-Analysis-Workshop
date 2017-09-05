@@ -2,13 +2,13 @@
 
 Wednesday
 ----------
-* [Introduction](monday/Introduction.pdf)
-* [Logging In and transferring files](monday/logging-in)
-* [Intro to command-line](monday/command-line-intro)
-* [What is Bioinformatics?](monday/What_is_Bioinformatics.pdf) (talk)
-* [Running jobs on the Cluster and using modules](monday/cluster)
-* [Installing Software](monday/installing_software)
-* [Intro to Microbial Sequencing](monday/) (talk)
+* [Introduction](wednesday/Introduction.pdf)
+* [Logging In and transferring files](wednesday/logging-in)
+* [Intro to command-line](wednesday/command-line-intro)
+* [What is Bioinformatics?](wednesday/What_is_Bioinformatics.pdf) (talk)
+* [Running jobs on the Cluster and using modules](wednesday/cluster)
+* [Installing Software](wednesday/installing_software)
+* [Intro to Microbial Sequencing](wednesday/) (talk)
 
 
 Thursday
