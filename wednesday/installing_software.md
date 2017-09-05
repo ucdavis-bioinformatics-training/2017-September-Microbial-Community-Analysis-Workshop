@@ -58,7 +58,7 @@ to a file named \.bash_profile [node the leading \. as its a 'hidden' file]. The
 
 ---	
 
-**4\.a** Install the Ribsomal Database Project (RDP) into src
+**4\.a** Install the **Ribsomal Database Project** (RDP) into src
 
 	git clone https://github.com/rdpstaff/RDPTools.git
 	cd RDPTools/
@@ -99,7 +99,7 @@ to a file named ~/\.bash_profile, then source it
 
 ---
 
-**6\.** install dbcAmplicons
+**6\.** install **dbcAmplicons**
 
 	pip install biom-format
 	git clone https://github.com/msettles/dbcAmplicons.git
@@ -111,7 +111,7 @@ to a file named ~/\.bash_profile, then source it
 
 ---
 
-** Lets Review **
+**Lets Review**
 
 We created a directory for the workshop, in that directory we created two folders src and bin. We've installed FLASH2, RDP and dbcAmplicons. We've placed the executable for flash in a bin folder and added the folder to our PATH. We created an environment variable for the RDP classifier. We've created a python virtual environment and then installed the python package biom-format using pip and the dbcAmplions package using setup.py.
 
@@ -136,3 +136,12 @@ You can test the dbcAmplicons installation buy running the script test_dbAmplico
 
 ---
 
+**7\.** Last lets copy the workshop data into our home directory.
+
+	cd 
+	cd mca_example
+	cp -r /share/biocore/workshops/2017_Sept_MCA/Illumina_Reads .
+	cp -r /share/biocore/workshops/2017_Sept_MCA/metadata .
+
+Lets take a look as the files, what is inside the Illumina_Reads folder? What is inside the metadata folder?
+---
