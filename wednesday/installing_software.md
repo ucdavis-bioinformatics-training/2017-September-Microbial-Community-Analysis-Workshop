@@ -65,6 +65,7 @@ to a file named \.bash_profile [node the leading \. as its a 'hidden' file]. The
 
 **4\.b** Install the **Ribsomal Database Project** (RDP) into src
 
+	module load java/jdk1.8
 	git clone https://github.com/rdpstaff/RDPTools.git
 	cd RDPTools/
 	git submodule init
@@ -78,6 +79,7 @@ to a file named \.bash_profile [node the leading \. as its a 'hidden' file]. The
 
 using your favorite text editor, _nano_ is simple, add the line
 
+	module load java/jdk1.8
 	export RDP_PATH=~/mca_example/src/RDPTools
 
 to a file named ~/\.bash_profile, then source it	
