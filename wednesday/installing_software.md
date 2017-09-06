@@ -1,5 +1,4 @@
-Installing the workshop software
-===============================================
+# Installing the workshop software
 
 **ALL of this can be done on the head node, ganesh**
 
@@ -121,6 +120,7 @@ We created a directory for the workshop, in that directory we created two folder
 4. We added a multiple lines to your \.bash_profile. How many lines?
 
 Now log out, log back in and verify that each application still works. Ex.
+
 	flash2 -h
 
 To verify RDP use 
@@ -143,5 +143,5 @@ You can test the dbcAmplicons installation buy running the script test_dbAmplico
 	cp -r /share/biocore/workshops/2017_Sept_MCA/Illumina_Reads .
 	cp -r /share/biocore/workshops/2017_Sept_MCA/metadata .
 
-Lets take a look as the files, what is inside the Illumina_Reads folder? What is inside the metadata folder?
----
+Take a look at the files ... what is inside the Illumina_Reads folder? What is inside the metadata folder?
+
