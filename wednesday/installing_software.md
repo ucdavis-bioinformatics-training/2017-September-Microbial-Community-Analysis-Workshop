@@ -32,7 +32,7 @@ and two other directors
 	mkdir mca_example/src
 	mkdir mca_example/bin
 
-**2\.** Now lets add the new bin directory to our PATH in a .bash_profile file
+**2\.** Now lets add the new bin directory to our PATH in a \.bash_profile file
 
 using your favorite text editor, _nano_ is simple, add the line
 
@@ -74,7 +74,7 @@ to a file named \.bash_profile [node the leading \. as its a 'hidden' file]. The
 	java -jar classifier.jar classify
 	cd ..
 
-**4\.c** Add the location of classifier.jar as a variable in our .bash_profile
+**4\.c** Add the location of classifier.jar as a variable in our \.bash_profile
 
 using your favorite text editor, _nano_ is simple, add the line
 
@@ -91,7 +91,7 @@ to a file named ~/\.bash_profile, then source it
 	module load python-libs/2.7.6-ubuntu
 	virtualenv dbcA_virtualenv
 
-**5\.b** now lets set the virtual environment to activate on login by adding it to our .bash_profile
+**5\.b** now lets set the virtual environment to activate on login by adding it to our \.bash_profile
 
 using your favorite text editor, _nano_ is simple, add the lines
 
@@ -100,7 +100,7 @@ using your favorite text editor, _nano_ is simple, add the lines
 	
 to a file named ~/\.bash_profile, then source it	
 
-	source ~/\.bash_profile
+	source ~/.bash_profile
 
 ---
 
