@@ -12,6 +12,10 @@ Secure SHell ... ssh. Log in to our server 'ganesh' using the following (or puTT
 
     ssh [username]@ganesh.genomecenter.ucdavis.edu
 
+... where 'username' *and the brackets* are replaced by your username (class10, for example). Using puTTY, you can specify only 'ganesh.genomecenter.ucdavis.edu' as the server to log into, and you'll be prompted for your username and password.
+
+### Achieving Clarity, and Bugging Out
+
 To start off: there will be many commands that will fill your screen with text. There are multiple ways to clear the clutter, and have an empty screen:
 
     <enter> <enter> <enter> 
@@ -25,7 +29,7 @@ And once you're really done working on the command line:
 
 But don't exit yet ... or if you did, just ssh back in. We've got work to do!
 
-### Command Line Basics
+### Command Line Basics: Listing Files and Killing Commands
 
 First some basics - how to look at your surroundings.
 
@@ -33,7 +37,7 @@ First some basics - how to look at your surroundings.
     ls   # list files here ... you should see nothing since your 'class##' homes are empty
     ls /tmp/  # list files somewhere else
 
-Let's run our first command ... because one of the first things that's good to know is *how to escape once you've started something you don't want*.
+Let's run our first time-consuming command ... because one of the first things that's good to know is *how to escape once you've started something you don't want*.
 
     sleep 1000  # wait for 1000 seconds!
     <ctrl-c>  # shows as '^C'; exits command entry without executing
@@ -56,11 +60,13 @@ So, ^C, ^D, 'q', and (from above) 'exit'. Generally can't hurt to try until one 
     <spacebar>
     <arrow keys, pgup, pgdn>  # forward or back through file
     g *or* G  # beginning or end of file
-    /s  # '/' enters search mode, "es" is pattern looked for (could be any string)
+    /yes  # '/' enters search mode, "yes" is pattern looked for (could be any string)
     /y 
     /no
-    # After searching for some text, using the '/' key, you can use:
-    n *or* N  # next or previous pattern match
+    # After successfully finding some text matches, you can use:
+    n  # next pattern match
+    N  # previous pattern match
+    <spacebar>  # all the navigation keys, like 'g' and <pgup>, still work
     q  # to quit
 
 
@@ -91,7 +97,11 @@ One reason you'll appreciate 'less' is that it's the default paginator for the '
 
 ### Getting Around
 
-The filesystem you're working on is like the branching root system of a tree. The top level, right at the root of the tree, is called the "root" directory, specified by '/' ... which is the divider for directory addresses, or "paths." We move around using the "change directory" command, 'cd':
+The filesystem you're working on is like the branching root system of a tree (image borrowed from web.sonoma.edu):
+
+![filesystem-example](filesystem.png)
+
+The top level, right at the root of the tree, is called the "root" directory, specified by '/' ... which is also the divider for directory addresses, or "paths." (Note that there's a directory named "root" just under the filesystem root ... this is for the "root user" or "superuser" ... but here we're talking about the true filesystem root, '/'). We move around using the "change directory" command, 'cd':
 
     cd  # no effect? that's because by itself it sends you home (to ~)
     cd /  # go to root of tree's root system
@@ -99,7 +109,7 @@ The filesystem you're working on is like the branching root system of a tree. Th
     pwd
     cd class10  # use your actual home, not class10
     pwd
-    cd /
+    cd /  # back to the root
     pwd
     cd ~  # a shortcut to home, from anywhere
     pwd
@@ -265,6 +275,8 @@ With BIG DATA(TM), you'll often see compressed files, or whole compressed folder
     ls -ltrha
     gunzip test.txt
     bzip2 test.txt; bunzip2 test.txt.bz2  # note the ';' is a substitute for <enter>
+
+Note that there are analogs of several file manipulation tools that allow you to view compressed files *as if* they weren't compressed, like 'zless' and 'zcat' for gzip-compressed files, and 'bzless' and 'bzcat' for bzip2-compressed files.
 
 
 ### Archives
