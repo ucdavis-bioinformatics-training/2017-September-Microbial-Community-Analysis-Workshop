@@ -82,7 +82,7 @@ using your favorite text editor, _nano_ is simple, add the line
 
 to a file named ~/\.bash_profile, then source it	
 
-	source ~/\.bash_profile
+	source ~/.bash_profile
 
 ---
 
