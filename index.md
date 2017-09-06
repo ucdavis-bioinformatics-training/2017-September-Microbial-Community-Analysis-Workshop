@@ -8,18 +8,20 @@ Wednesday
 * [What is Bioinformatics?](wednesday/What_is_Bioinformatics.pdf) (talk)
 * [Running jobs on the Cluster and using modules](wednesday/cluster)
 * [Installing Software](wednesday/installing_software)
-* [Intro to Microbial Sequencing](wednesday/) (talk)
+* [Intro to Microbial Sequencing](wednesday/Intro2MCSequencing.pdf) (talk)
 
 
 Thursday
 ----------
 
+* [Host Microbe Systems Biology Core] (talk)
 
 Friday
 ----------
 
 * [Intro to R](friday/Intro2R.md)
-* [Closing thoughts](friday/Closing_Thoughts.pdf)
+* [Oligotyping] talk
+* [Closing thoughts]
 
 Evaluation!
 ----------
