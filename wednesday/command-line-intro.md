@@ -101,9 +101,9 @@ The filesystem you're working on is like the branching root system of a tree (im
 
 ![filesystem-example](filesystem.png)
 
-The top level, right at the root of the tree, is called the "root" directory, specified by '/' ... which is also the divider for directory addresses, or "paths." (Note that there's a directory named "root" just under the filesystem root ... this is for the "root user" or "superuser" ... but here we're talking about the true filesystem root, '/'). We move around using the "change directory" command, 'cd':
+The top level, right at the root of the tree, is called the "root" directory, specified by '/' ... which is also the divider for directory addresses, or "paths." (Note that there's also often a directory named "root" just under the filesystem root ... this is for the "root user" or "superuser" ... but here we're talking about the true filesystem root, '/'). We move around using the "change directory" command, 'cd':
 
-    cd  # no effect? that's because by itself it sends you home (to ~)
+    cd  # no effect? that's because by itself it sends you home (to ~, or /home/class10/ if you're class10)
     cd /  # go to root of tree's root system
     cd home  # go to where everyone's homes are
     pwd
