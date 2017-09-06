@@ -2,7 +2,7 @@
 
 Wednesday
 ----------
-* [Introduction](wednesday/Introduction.pdf)
+* [Introduction](wednesday/Introduction.pdf) (talk)
 * [Logging In and transferring files](wednesday/logging-in)
 * [Intro to command-line](wednesday/command-line-intro)
 * [What is Bioinformatics?](wednesday/What_is_Bioinformatics.pdf) (talk)
