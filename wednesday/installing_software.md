@@ -58,7 +58,13 @@ to a file named \.bash_profile [node the leading \. as its a 'hidden' file]. The
 
 ---	
 
-**4\.a** Install the **Ribsomal Database Project** (RDP) into src
+**4\.a** Install apache ant, need for RDP
+
+	wget http://mirrors.ibiblio.org/apache//ant/binaries/apache-ant-1.10.1-bin.tar.gz
+	tar xzvf apache-ant-1.10.1-bin.tar.gz
+	ln -s ~/mca_example/src/apache-ant-1.10.1/bin/ant ~/mca_example/bin/.
+
+**4\.b** Install the **Ribsomal Database Project** (RDP) into src
 
 	git clone https://github.com/rdpstaff/RDPTools.git
 	cd RDPTools/
@@ -69,7 +75,7 @@ to a file named \.bash_profile [node the leading \. as its a 'hidden' file]. The
 	java -jar classifier.jar classify
 	cd ..
 
-**4\.b** Add the location of classifier.jar as a variable in our .bash_profile
+**4\.c** Add the location of classifier.jar as a variable in our .bash_profile
 
 using your favorite text editor, _nano_ is simple, add the line
 
@@ -109,6 +115,7 @@ to a file named ~/\.bash_profile, then source it
 	dbcAmplicons -h
 	cd ..
 
+(Optional) You could also test the dbcAmplicons installation by running the script, test_dbAmplicons.sh, under the tests folds (in dbcAmplicions).
 ---
 
 **Lets Review**
@@ -141,7 +148,6 @@ You can test the dbcAmplicons installation buy running the script test_dbAmplico
 	cd 
 	cd mca_example
 	cp -r /share/biocore/workshops/2017_Sept_MCA/Illumina_Reads .
-	cp -r /share/biocore/workshops/2017_Sept_MCA/metadata .
 
 Lets take a look as the files, what is inside the Illumina_Reads folder? What is inside the metadata folder?
 ---
