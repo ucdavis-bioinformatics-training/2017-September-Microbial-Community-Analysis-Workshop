@@ -141,6 +141,14 @@ You can check the current version of everything with, we usually save the output
 
 You can test the dbcAmplicons installation buy running the script test_dbAmplicons.sh, in the tests folder.
 
+If for some reason installation failed you can extract a copy from the workshop share
+
+	cd
+	cd mca_example
+	tar xzvf /share/biocore/workshops/2017_Sept_MCA/software.tar.gz
+
+You still need to set up the same environment variable in your \.bash_profile
+
 ---
 
 **7\.** Last lets copy the workshop data into our home directory.
@@ -149,5 +157,5 @@ You can test the dbcAmplicons installation buy running the script test_dbAmplico
 	cd mca_example
 	cp -r /share/biocore/workshops/2017_Sept_MCA/Illumina_Reads .
 
-Take a look at the files ... what is inside the Illumina_Reads folder? What is inside the metadata folder?
+Take a look at the files ... what is inside the Illumina_Reads folder?
 
