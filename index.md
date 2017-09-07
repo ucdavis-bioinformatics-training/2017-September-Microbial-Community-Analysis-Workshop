@@ -1,5 +1,7 @@
 ## September 6-8, 2017
 
+[github link](https://github.com/ucdavis-bioinformatics-training/2017-September-Microbial-Community-Analysis-Workshop)
+
 Wednesday
 ----------
 * [Introduction](wednesday/Introduction.pdf) (talk)
