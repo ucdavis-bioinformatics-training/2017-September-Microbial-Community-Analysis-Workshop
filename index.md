@@ -8,12 +8,15 @@ Wednesday
 * [What is Bioinformatics?](wednesday/What_is_Bioinformatics.pdf) (talk)
 * [Running jobs on the Cluster and using modules](wednesday/cluster)
 * [Installing Software](wednesday/installing_software)
-* [Intro to Microbial Sequencing](wednesday/Intro2MCSequencing.pdf) (talk)
 
 
 Thursday
 ----------
 
+* [Intro to Microbial Sequencing](wednesday/Intro2MCSequencing.pdf) (talk)
+* [dbcAmplicons: Amplicons](thursday/dbcAmplicons_Amplicons.pdf) (materials)
+* [dbcAmplicons: Bioinformatics](thursday/dbcAmplicons_Bioinformatics.pdf) (materials)
+* [dbcAmplicons: Data processing](thursday/dbcAmplicons_commands.md) (hands on)
 * [Host Microbe Systems Biology Core] (talk)
 
 Friday
