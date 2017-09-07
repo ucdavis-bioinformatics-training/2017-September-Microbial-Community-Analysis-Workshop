@@ -101,6 +101,7 @@ View the help documentation and run join
 	dbcAmplicons join -t 4 -O Slashpile.intermediate/16sV1V3/Slashpile-16sV1V3 -1 Slashpile.intermediate/16sV1V3/Slashpile-16sV1V3_R1.fastq.gz > join-16sV1V3.log
 
 view the log
+
 	cat join-16sV1V3.log
 
 Try changing the parameter --max-mismatch-density, first to 0.1, then to 0.5, how do they differ.
