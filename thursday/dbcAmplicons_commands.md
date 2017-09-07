@@ -7,7 +7,7 @@ srun -t 1-0 -c 4 -n 1 --mem 10000 --reservation workshop --pty /bin/bash
 
 The goal of today is to process raw Illumina sequence reads to abudance tables for the 16sV1-V3 amplicon. To do so 1) we need have all the software installed, and 2) The Illumina sequence data in our project folder (mca_example). We will first need to prepare the input metadata files: barcodes, primers, and samples. Amplicon processing with dbcAmplicons includes the following steps: preprocessing, join, classify and abundances
 
-<img src="thursday/Workflow.png" width="200">
+![workflow](thursday/Workflow.png)
 
 Over the next week finish processing the rest of the amplicons.
 
