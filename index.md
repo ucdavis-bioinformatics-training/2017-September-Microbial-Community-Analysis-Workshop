@@ -18,7 +18,7 @@ Thursday
 * [Intro to Microbial Sequencing](wednesday/Intro2MCSequencing.pdf) (talk)
 * [dbcAmplicons: Bioinformatics](thursday/dbcAmplicons_Bioinformatics.pdf) (materials)
 * [dbcAmplicons: Data processing](thursday/dbcAmplicons_commands.md) (hands on)
-* [Host Microbe Systems Biology Core] (talk)
+* [Host Microbe Systems Biology Core](Microbial Analysis Presentation)
 
 Friday
 ----------

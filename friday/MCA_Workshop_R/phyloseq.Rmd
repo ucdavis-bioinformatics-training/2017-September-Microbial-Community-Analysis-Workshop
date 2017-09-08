@@ -14,6 +14,9 @@ The phyloseq package is fast becoming a good way a managing micobial community d
 3. Filter out Phylum
 4. Filter out additional Taxa
 5. Filter out samples
+6. Graphical Summaries
+7. Ordination 
+8. Differential Abundances
 
 ## installation from bioconductor
 
@@ -25,12 +28,10 @@ We first need to make sure we have the necessary packages: phyloseq, ggplot2, gr
 #biocLite("ggplot2")
 #biocLite("gridExtra")
 #biocLite("edgeR")
-#biocLite("ape")
 #biocLite("vegan")
 library(phyloseq)
 library(ggplot2)
 library(gridExtra)
-library(ape)
 library(vegan)
 ```
 
@@ -142,7 +143,7 @@ plot_ordination(logt, out.pcoa.logt, type = "samples",
                 color = "Slash_pile_number", shape = "Depth_cm") + labs(col = "Slash pile number") +
   coord_fixed(sqrt(evals[2] / evals[1]))
 plot_ordination(logt, out.pcoa.logt, type = "species", color = "Phylum") 
-  + coord_fixed(sqrt(evals[2] / evals[1]))
+  coord_fixed(sqrt(evals[2] / evals[1]))
 
 ```
 
@@ -227,21 +228,46 @@ s16sV1V3.4hell_acidob = subset_taxa(s16sV1V3.4hell, Phylum=="p__Acidobacteria")
 title = "plot_bar; Acidobacteria-only"
 plot_bar(s16sV1V3.4hell_acidob, "Slash_pile_number", "Abundance", "Family", title=title)
 
-plot_heatmap(s16sV1V3.4hell_acidob, "PCoA", distance="bray", sample.label="Slash_pile_number", taxa.label="Genus", low="#FFFFCC", high="#000033", na.value="white")
+prop  = transform_sample_counts(s16sV1V3.4, function(x) x / sum(x) )
+keepTaxa <- ((apply(otu_table(prop) >= 0.005,1,sum,na.rm=TRUE) > 2) | (apply(otu_table(prop) >= 0.05, 1, sum,na.rm=TRUE) > 0))
+table(keepTaxa)
+s16sV1V3.4hell_trim <- prune_taxa(keepTaxa,s16sV1V3.4hell)
+plot_heatmap(s16sV1V3.4hell_trim, "PCoA", distance="bray", sample.label="Slash_pile_number", taxa.label="Genus", low="#FFFFCC", high="#000033", na.value="white")
 
-plot_net(s16sV1V3.4hell_acidob, maxdist=0.4, color="Slash_pile_number", shape="Depth_cm")
+plot_net(s16sV1V3.4hell_trim, maxdist=0.4, color="Slash_pile_number", shape="Depth_cm")
 
 hell.tip.labels <- as(get_variable(s16sV1V3.4hell, "Slash_pile_number"), "character")
 # This is the actual hierarchical clustering call, specifying average-linkage clustering
 d <- distance(s16sV1V3.4hell, method="bray", type="samples")
 hell.hclust     <- hclust(d, method="average")
 plot(hell.hclust)
+
+#Lets write out a plot
+pdf("My_dendro.pdf", width=7, height=7, pointsize=8)
+plot(hell.hclust)
+dev.off()
+
+png("My_dendro.png", width = 7, height = 7, res=300, units = "in")
+plot(hell.hclust)
+dev.off()
 ```
+
+## Ordination
+
+```{r}
+v4.hell.ord <- ordinate(s16sV1V3.4hell, "NMDS", "bray")
+p1 = plot_ordination(s16sV1V3.4hell, v4.hell.ord, type="taxa", color="Phylum", title="taxa")
+print(p1)
+p1 + facet_wrap(~Phylum, 5)
+p2 = plot_ordination(s16sV1V3.4hell, v4.hell.ord, type="samples", color="Depth_cm", shape="Slash_pile_number") 
+p2 + geom_polygon(aes(fill=Slash_pile_number)) + geom_point(size=5) + ggtitle("samples")
+```
+
+Now try doing oridination with other transformations, such as relative abundance, log. Also looks and see if you can find any trends in the variable Dist_from_edge.
 
 ## Differential Abundances
 
-For differential abundances we use RNAseq pipeline EdgeR and limma voom
-
+For differential abundances we use RNAseq pipeline EdgeR and limma voom.
 
 ```{r}
 library("edgeR")
@@ -267,7 +293,8 @@ if( !all(is.finite(z$samples$norm.factors)) ){
 
 plotMDS(z, col = as.numeric(factor(sample_data(s16sV1V3.4)$Slash_pile_number)), labels = sample_names(s16sV1V3.4))
 
-mm <- model.matrix(~ 0 + Slash_pile_number, data=data.frame(as(sample_data(s16sV1V3.4),"matrix"))) # specify model with no intercept for easier contrasts
+# Creat a model based on Slash_pile_number and depth
+mm <- model.matrix(~ Slash_pile_number + Depth_cm, data=data.frame(as(sample_data(s16sV1V3.4),"matrix"))) # specify model with no intercept for easier contrasts
 mm
 y <- voom(d, mm, plot = T)
 
@@ -275,9 +302,7 @@ fit <- lmFit(y, mm)
 head(coef(fit))
 
 # Comparison between cultivars C and I5 at time 6
-contr <- makeContrasts(Slash_pile_number2 - Slash_pile_number1,
-                       Slash_pile_number3 - Slash_pile_number1,
-                       Slash_pile_number3 - Slash_pile_number2,
+contr <- makeContrasts(Depth5v10 = "Depth_cm5",
                        levels = colnames(coef(fit)))
 tmp <- contrasts.fit(fit, contr)
 tmp <- eBayes(tmp)
