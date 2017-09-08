@@ -26,7 +26,7 @@ Friday
 * [Intro to R](friday/Intro2R.md)
 * [Oligotyping] talk
 * [dbcAmplicons: Amplicons](thursday/dbcAmplicons_Amplicons.pdf) (materials)
-* [MCA Analysis in phyloseq]
+* [MCA Analysis in phyloseq][friday/MCA_Workshop_R/phyloseq.md]
 * [Closing thoughts](friday/Closing_Thoughts.pdf)
 
 Evaluation!
