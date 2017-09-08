@@ -159,7 +159,7 @@ View the output folder, what do you see?
 
 **7\.** Write out the softare versions to a file in the folder for records keeping.
 
-	dbcVersionReport.sh &> > VersionInfo.txt
+	dbcVersionReport.sh &> VersionInfo.txt
 
 **8\.** Transfer the four output files from dbcAmplicons abundances to your computer. Can use scp or sftp
 

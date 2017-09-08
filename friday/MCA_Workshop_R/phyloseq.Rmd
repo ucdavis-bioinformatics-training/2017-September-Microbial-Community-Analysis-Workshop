@@ -51,13 +51,13 @@ rank_names(s16sV1V3)
 sample_variables(s16sV1V3)
 
 s16sV1V3
-plot_bar(s16sV1V3, fill = "Phylum")
+plot_bar(s16sV1V3, fill = "Phylum") + theme(legend.position="bottom")
 
 ```
 
 ## Filtering our dataset
 
-Lets generate a prevelance table (number of sample each taxa occurs in) for each taxa.
+Lets generate a prevelance table (number of samples each taxa occurs in) for each taxa.
 ```{r}
 prevelancedf = apply(X = otu_table(s16sV1V3),
                  MARGIN = 1,
@@ -96,6 +96,8 @@ s16sV1V3.1 = subset_taxa(s16sV1V3.1, !Phylum %in% phyla2Filter)
 s16sV1V3.1
 ```
 
+### Individual Taxa Filtering
+
 Subset to the remaining phyla by prevelance. 
 ```{r}
 prevelancedf1 = subset(prevelancedf, Phylum %in% get_taxa_unique(s16sV1V3.1, taxonomic.rank = "Phylum"))
@@ -106,9 +108,7 @@ ggplot(prevelancedf1, aes(TotalAbundance, Prevalence / nsamples(s16sV1V3.1),colo
   facet_wrap(~Phylum) + theme(legend.position="none")
 ```
 
-### Individual Taxa Filtering
-
-Sometimes you see a clear break, however we aren't here. In this case I'm moslty interested in those organisms consistantly present in the dataset I'm removing all taxa present in less than 50% of samples.
+Sometimes you see a clear break, however we aren't seeing one here. In this case I'm moslty interested in those organisms consistantly present in the dataset, so I'm removing all taxa present in less than 50% of samples.
 ```{r}
 #  Define prevalence threshold as 10% of total samples
 prevalenceThreshold = 0.50 * nsamples(s16sV1V3.1)
@@ -126,33 +126,43 @@ Agglomerate taxa at the Genus level (combine all with the same name) and remove 
 length(get_taxa_unique(s16sV1V3.2, taxonomic.rank = "Genus"))
 s16sV1V3.3 = tax_glom(s16sV1V3.2, "Genus", NArm = TRUE)
 s16sV1V3.3
+
+## out of curiosity how many "reads" does this leave us at???
+sum(colSums(otu_table(s16sV1V3.3)))
 ```
 
 ## Now lets filter out samples (outliers and low performing samples)
 
-Do some simple ordination looking for outlier samples
+Do some simple ordination looking for outlier samples, first we variance stabilize the data with a log transform, the perform PCoA using bray's distances
 ```{r}
-prop  = transform_sample_counts(s16sV1V3.3, function(x) x / sum(x) )
-out.pcoa.prop <- ordinate(prop, method = "PCoA", distance = "bray")
-evals <- out.pcoa.prop$values$Eigenvalues
-plot_ordination(prop, out.pcoa.prop, type = "samples", 
+logt  = transform_sample_counts(s16sV1V3.3, function(x) log(1 + x) )
+out.pcoa.logt <- ordinate(logt, method = "PCoA", distance = "bray")
+evals <- out.pcoa.logt$values$Eigenvalues
+plot_ordination(logt, out.pcoa.logt, type = "samples", 
                 color = "Slash_pile_number", shape = "Depth_cm") + labs(col = "Slash pile number") +
   coord_fixed(sqrt(evals[2] / evals[1]))
+plot_ordination(logt, out.pcoa.logt, type = "species", color = "Phylum") 
+  + coord_fixed(sqrt(evals[2] / evals[1]))
+
 ```
 
-```{r}
-plot_ordination(prop, out.pcoa.prop, type = "species", color = "Phylum") +
-  coord_fixed(sqrt(evals[2] / evals[1]))
+You could also use the MDS method of ordination here, edit the code to do so. Can also edit the distance method used to jaccard, jsd, euclidean. Play with changing those parameters
 
+```{r, eval=FALSE}
+#Can view the distance method options with 
+?distanceMethodList
+
+# can veiw the oridinate methods with
+?ordinate
 ```
 
 Show taxa proportions per sample
 ```{r}
 grid.arrange(nrow = 2,
-qplot(as(otu_table(prop),"matrix")[, "Slashpile18"], geom = "histogram", bins=30) +
+qplot(as(otu_table(logt),"matrix")[, "Slashpile18"], geom = "histogram", bins=30) +
   xlab("Relative abundance"),
 
-qplot(as(otu_table(prop),"matrix")[, "Slashpile10"], geom = "histogram", bins=30) +
+qplot(as(otu_table(logt),"matrix")[, "Slashpile10"], geom = "histogram", bins=30) +
   xlab("Relative abundance")
 )
 # if you needed to remove candidate outliers, can use the below to remove sample Slashpile18
@@ -201,11 +211,18 @@ plotLog = plot_abundance(s16sV1V3.4log, "Slash_pile_number", title="Log")
 grid.arrange(nrow = 4, plotOriginal, plotRelative, plotHellinger, plotLog)
 ```
 
+[Normalization and microbial differential abundance strategies depend upon data characteristics]
+(https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-017-0237-y)
 
 ## Graphical Summaries
 
 ```{r}
-# Subset by Taxa
+plot_richness(s16sV1V3.4, measures=c("Observed","Chao1"))
+
+plot_richness(s16sV1V3.4, x = "Slash_pile_number", color="Depth_cm", measures=c("Chao1", "Shannon"))
+# Other Richness measures, "Observed", "Chao1", "ACE", "Shannon", "Simpson", "InvSimpson", "Fisher" try some of these others.
+
+# Subset dataset by phylum
 s16sV1V3.4hell_acidob = subset_taxa(s16sV1V3.4hell, Phylum=="p__Acidobacteria")
 title = "plot_bar; Acidobacteria-only"
 plot_bar(s16sV1V3.4hell_acidob, "Slash_pile_number", "Abundance", "Family", title=title)
@@ -215,7 +232,7 @@ plot_heatmap(s16sV1V3.4hell_acidob, "PCoA", distance="bray", sample.label="Slash
 plot_net(s16sV1V3.4hell_acidob, maxdist=0.4, color="Slash_pile_number", shape="Depth_cm")
 
 hell.tip.labels <- as(get_variable(s16sV1V3.4hell, "Slash_pile_number"), "character")
-# This is the actual hierarchical clustering call, specifying average-link clustering
+# This is the actual hierarchical clustering call, specifying average-linkage clustering
 d <- distance(s16sV1V3.4hell, method="bray", type="samples")
 hell.hclust     <- hclust(d, method="average")
 plot(hell.hclust)
@@ -223,6 +240,7 @@ plot(hell.hclust)
 
 ## Differential Abundances
 
+For differential abundances we use RNAseq pipeline EdgeR and limma voom
 
 
 ```{r}
@@ -240,12 +258,13 @@ if( !is.null(taxonomy) ){
 d = DGEList(counts=m, genes=taxonomy, remove.zeros = TRUE)
 
 # Calculate the normalization factors
-z = calcNormFactors(d, method="TMM")
+z = calcNormFactors(d, method="RLE")
 # Check for division by zero inside `calcNormFactors`
 if( !all(is.finite(z$samples$norm.factors)) ){
   stop("Something wrong with edgeR::calcNormFactors on this data,
        non-finite $norm.factors, consider changing `method` argument")
 }
+
 plotMDS(z, col = as.numeric(factor(sample_data(s16sV1V3.4)$Slash_pile_number)), labels = sample_names(s16sV1V3.4))
 
 mm <- model.matrix(~ 0 + Slash_pile_number, data=data.frame(as(sample_data(s16sV1V3.4),"matrix"))) # specify model with no intercept for easier contrasts
