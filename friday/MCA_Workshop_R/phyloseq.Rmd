@@ -7,18 +7,16 @@ output:
 
 # Using the Phyloseq package
 
-## installation for bioconductor
-
-```{r,eval=FALSE}
-source("http://bioconductor.org/biocLite.R")
-biocLite("phyloseq")
+## installation from bioconductor
+```{r}
+#source("http://bioconductor.org/biocLite.R")
+#biocLite("phyloseq")
 library(phyloseq)
 library(ggplot2)
 
 ```
 
-## Read in the dataset, biom file
-
+## Read in the dataset, biom file generated from dbcAmplicons pipeline
 ```{r}
 slashpile_16sV1V3 <- "16sV1V3.biom"
 s16sV1V3 = import_biom(BIOMfilename = slashpile_16sV1V3, parseFunction = parse_taxonomy_default)
@@ -30,6 +28,7 @@ s16sV1V3
 
 ## Filtering
 
+Lets generate a prevelance table for each taxa
 ```{r}
 prevelancedf = apply(X = otu_table(s16sV1V3),
                  MARGIN = 1,
@@ -41,7 +40,7 @@ prevelancedf = data.frame(Prevalence = prevelancedf,
 prevelancedf
 ```
 
-The following ensures that features with ambiguous phylum annotation are also removed. Note the flexibility in defining strings that should be considered ambiguous annotation.
+The following ensures that features with ambiguous phylum annotation are also removed.
 
 ```{r}
 s16sV1V3.1 <- subset_taxa(s16sV1V3, !is.na(Phylum) & !Phylum %in% c("", "uncharacterized"))
@@ -55,6 +54,7 @@ plyr::ddply(prevelancedf, "Phylum", function(df1){
   data.frame(mean_prevalence=mean(df1$Prevalence),mean_abundance=mean(df1$TotalAbundance,na.rm = T),stringsAsFactors = F)
   })
 ```
+
 ### Define phyla to filter
 ```{r}
 phyla2Filter = c("p__Aquificae", "p__candidate division ZB3",
@@ -75,14 +75,41 @@ ggplot(prevelancedf1, aes(TotalAbundance, Prevalence / nsamples(s16sV1V3.2),colo
 ```
 
 ```{r}
-#  Define prevalence threshold as 5% of total samples
+#  Define prevalence threshold as 10% of total samples
 prevalenceThreshold = 0.10 * nsamples(s16sV1V3.2)
 prevalenceThreshold
-
-## [1] 18
 
 # Execute prevalence filter, using `prune_taxa()` function
 keepTaxa = rownames(prevelancedf1)[(prevelancedf1$Prevalence >= prevalenceThreshold)]
 s16sV1V3.3 = prune_taxa(keepTaxa, s16sV1V3.2)
 s16sV1V3.3
 ```
+
+### Agglomerate taxa and remove all taxa with not at the genus level
+```{r}
+length(get_taxa_unique(s16sV1V3.3, taxonomic.rank = "Genus"))
+s16sV1V3.4 = tax_glom(s16sV1V3.3, "Genus", NArm = TRUE)
+s16sV1V3.4
+```
+
+```{r}
+plot_abundance = function(physeq,title = "",
+			     Facet = "Order", Color = "Phylum"){
+  # Arbitrary subset, based on Phylum, for plotting
+  p1f = subset_taxa(physeq, Phylum %in% c("p__Firmicutes"))
+  mphyseq = psmelt(p1f)
+  mphyseq <- subset(mphyseq, Abundance > 0)
+  ggplot(data = mphyseq, mapping = aes_string(x = "sex",y = "Abundance",
+                                 color = Color, fill = Color)) +
+    geom_violin(fill = NA) +
+    geom_point(size = 1, alpha = 0.3,
+                position = position_jitter(width = 0.3)) +
+    facet_wrap(facets = Facet) + scale_y_log10()+
+    theme(legend.position="none")
+}
+
+plotBefore = plot_abundance(s16sV1V3.4,"before")
+
+```
+
+
