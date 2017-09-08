@@ -16,7 +16,6 @@ Thursday
 ----------
 
 * [Intro to Microbial Sequencing](wednesday/Intro2MCSequencing.pdf) (talk)
-* [dbcAmplicons: Amplicons](thursday/dbcAmplicons_Amplicons.pdf) (materials)
 * [dbcAmplicons: Bioinformatics](thursday/dbcAmplicons_Bioinformatics.pdf) (materials)
 * [dbcAmplicons: Data processing](thursday/dbcAmplicons_commands.md) (hands on)
 * [Host Microbe Systems Biology Core] (talk)
@@ -26,7 +25,9 @@ Friday
 
 * [Intro to R](friday/Intro2R.md)
 * [Oligotyping] talk
-* [Closing thoughts]
+* [dbcAmplicons: Amplicons](thursday/dbcAmplicons_Amplicons.pdf) (materials)
+* [MCA Analysis in phyloseq]
+* [Closing thoughts](friday/Closing_Thoughts.pdf)
 
 Evaluation!
 ----------

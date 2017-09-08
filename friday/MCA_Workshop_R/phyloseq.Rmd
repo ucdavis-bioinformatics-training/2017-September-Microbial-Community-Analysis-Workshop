@@ -1,0 +1,88 @@
+---
+title: "Microbial Community Analysis workshop"
+output: 
+  md_document:
+    variant: markdown_github
+---
+
+# Using the Phyloseq package
+
+## installation for bioconductor
+
+```{r,eval=FALSE}
+source("http://bioconductor.org/biocLite.R")
+biocLite("phyloseq")
+library(phyloseq)
+library(ggplot2)
+
+```
+
+## Read in the dataset, biom file
+
+```{r}
+slashpile_16sV1V3 <- "16sV1V3.biom"
+s16sV1V3 = import_biom(BIOMfilename = slashpile_16sV1V3, parseFunction = parse_taxonomy_default)
+colnames(tax_table(s16sV1V3)) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus")
+rank_names(s16sV1V3)
+
+s16sV1V3
+```
+
+## Filtering
+
+```{r}
+prevelancedf = apply(X = otu_table(s16sV1V3),
+                 MARGIN = 1,
+                 FUN = function(x){sum(x > 0)})
+# Add taxonomy and total read counts to this data.frame
+prevelancedf = data.frame(Prevalence = prevelancedf,
+                      TotalAbundance = taxa_sums(s16sV1V3),
+                      tax_table(s16sV1V3))
+prevelancedf
+```
+
+The following ensures that features with ambiguous phylum annotation are also removed. Note the flexibility in defining strings that should be considered ambiguous annotation.
+
+```{r}
+s16sV1V3.1 <- subset_taxa(s16sV1V3, !is.na(Phylum) & !Phylum %in% c("", "uncharacterized"))
+s16sV1V3.1
+```
+
+### Now subset low occurance taxa
+
+```{r}
+plyr::ddply(prevelancedf, "Phylum", function(df1){
+  data.frame(mean_prevalence=mean(df1$Prevalence),mean_abundance=mean(df1$TotalAbundance,na.rm = T),stringsAsFactors = F)
+  })
+```
+### Define phyla to filter
+```{r}
+phyla2Filter = c("p__Aquificae", "p__candidate division ZB3",
+  "p__Crenarchaeota","p__Deinococcus-Thermus","p__Omnitrophica","p__Tenericutes","p__Thermodesulfobacteria")
+# Filter entries with unidentified Phylum.
+s16sV1V3.2 = subset_taxa(s16sV1V3.1, !Phylum %in% phyla2Filter)
+s16sV1V3.2
+```
+
+### Subset to the remaining phyla
+```{r}
+prevelancedf1 = subset(prevelancedf, Phylum %in% get_taxa_unique(s16sV1V3.2, taxonomic.rank = "Phylum"))
+ggplot(prevelancedf1, aes(TotalAbundance, Prevalence / nsamples(s16sV1V3.2),color=Phylum)) +
+  # Include a guess for parameter
+  geom_hline(yintercept = 0.05, alpha = 0.5, linetype = 2) + geom_point(size = 2, alpha = 0.7) +
+  scale_x_log10() +  xlab("Total Abundance") + ylab("Prevalence [Frac. Samples]") +
+  facet_wrap(~Phylum) + theme(legend.position="none")
+```
+
+```{r}
+#  Define prevalence threshold as 5% of total samples
+prevalenceThreshold = 0.10 * nsamples(s16sV1V3.2)
+prevalenceThreshold
+
+## [1] 18
+
+# Execute prevalence filter, using `prune_taxa()` function
+keepTaxa = rownames(prevelancedf1)[(prevelancedf1$Prevalence >= prevalenceThreshold)]
+s16sV1V3.3 = prune_taxa(keepTaxa, s16sV1V3.2)
+s16sV1V3.3
+```

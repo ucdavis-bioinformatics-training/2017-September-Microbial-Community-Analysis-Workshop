@@ -96,11 +96,13 @@ Finnally, look at the output in the Slashpile.intermediate folder, how many subf
 **3\.** Next, lets merge/join the read pairs, should take less than 10 minutes
 
 View the help documentation and run join
+
 	dbcAmplicons join -h
 
 	dbcAmplicons join -t 4 -O Slashpile.intermediate/16sV1V3/Slashpile-16sV1V3 -1 Slashpile.intermediate/16sV1V3/Slashpile-16sV1V3_R1.fastq.gz > join-16sV1V3.log
 
 view the log
+
 	cat join-16sV1V3.log
 
 Try changing the parameter --max-mismatch-density, first to 0.1, then to 0.5, how do they differ.
@@ -110,6 +112,7 @@ If you prefer the default, run join again with defaults. dbcAmplicons join also 
 **4\.** Classify the merged reads using RDP, should take less than 2 hours
 
 View the help documentation and run classify
+
 	dbcAmplicons classify -h
 
 	dbcAmplicons classify -p 4 --gene 16srrna -U Slashpile.intermediate/16sV1V3/Slashpile-16sV1V3.extendedFrags.fastq.gz -O Slashpile.intermediate/16sV1V3/Slashpile-16sV1V3
@@ -178,4 +181,4 @@ Once join is complete for all amplicons, setup and run the remainder of the pipe
 
 **FYI** Preprocessing Pairs with inline BC, Mills lab protocol
 
-	preproc_Pair_with_inlineBC.py -h
+	preprocPair_with_inlineBC.py -h
